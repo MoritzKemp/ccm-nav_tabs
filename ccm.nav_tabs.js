@@ -27,13 +27,37 @@
 (function(){
     
    var component = {
-       name: 'nav_tabs',    
-       ccm: 'https://akless.github.io/ccm/ccm.js',
-       config: {
-           css: ['ccm.load','./resources/style.css']
-       },
-       Instance: function(){
-           this.start = function(){console.log('ccm.nav_tabs loaded');};
+        name: 'nav_tabs',    
+        ccm: 'https://akless.github.io/ccm/ccm.js',
+        config: {
+            html       : ['ccm.load','./resources/html.json'],
+            css        : ['ccm.load','./resources/style.css'],
+            header_text : ''
+        },
+        Instance: function(){
+            var self = this;
+            var my;
+
+            this.ready = function( callback ) {
+                my = self.ccm.helper.privatize( self );                
+                if( callback ) callback();
+            };
+
+            this.start = function( callback ) {
+                self.buildView();
+            },
+
+            this.buildView = function( ){
+                var header  = self.ccm.helper.html(my.html.header);
+                
+                if(my.header_text !== '' && (typeof my.header_text === 'string')) {
+                    header.querySelector('.text-container').appendChild(
+                        document.createTextNode(my.header_text)
+                    );
+                }
+                
+                self.element.appendChild( header );
+            };
        }
    };
     

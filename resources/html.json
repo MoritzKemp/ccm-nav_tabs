@@ -1,0 +1,20 @@
+{
+    "header" : {
+        "tag"   : "div",
+        "class" : "header",
+        "inner" : [
+            {
+                "tag"   : "div",
+                "class" : "button-container"
+            },
+            {
+                "tag"   : "div",
+                "class" : "text-container" 
+            },
+            {
+                "tag"   : "div",
+                "class" : "spacer"
+            }
+        ]
+    }
+}
