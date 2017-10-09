@@ -21,19 +21,27 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
+.container {
+    position: fixed;
+    width: 100%;
+    top: 0;
+    left: 0;
+}
 
+
+/* -- Fix header -- */
 .header {
     position: fixed;
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
+    z-index: 2;
     width: 100%;
     height: 70px;
     top: 0;
     left: 0;
     background-color: #f98722;
-    box-shadow: 2px 0 7px rgba(0,0,0,0.5);
 }
 
 .button-container {
@@ -50,4 +58,19 @@ THE SOFTWARE.
 
 .spacer {
     flex: 1 0 0;
+}
+
+/* -- Tabs row -- */
+.tabs-row {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    height: 72px;
+    top: 68px;
+    left: 0;
+    background-color: #f98722;
+    transition: transform 200ms;
 }

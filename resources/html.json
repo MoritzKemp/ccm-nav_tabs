@@ -1,20 +1,31 @@
 {
-    "header" : {
-        "tag"   : "div",
-        "class" : "header",
+    "container" : {
+        "tag"   :"div",
+        "class" :"container",
         "inner" : [
             {
                 "tag"   : "div",
-                "class" : "button-container"
+                "class" : "header",
+                "inner" : [
+                    {
+                        "tag"   : "div",
+                        "class" : "button-container"
+                    },
+                    {
+                        "tag"   : "div",
+                        "class" : "text-container" 
+                    },
+                    {
+                        "tag"   : "div",
+                        "class" : "spacer"
+                    }
+                ]
             },
             {
                 "tag"   : "div",
-                "class" : "text-container" 
-            },
-            {
-                "tag"   : "div",
-                "class" : "spacer"
-            }
-        ]
+                "class" : "tabs-row",
+                "inner" : []
+            }   
+        ]   
     }
 }

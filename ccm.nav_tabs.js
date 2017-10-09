@@ -37,6 +37,8 @@
         Instance: function(){
             var self = this;
             var my;
+            var touchYstart = 0;
+            var touchYdistance = 0;
 
             this.ready = function( callback ) {
                 my = self.ccm.helper.privatize( self );                
@@ -44,19 +46,53 @@
             };
 
             this.start = function( callback ) {
+                console.log(self);
+                
+                // Build view from html.json data
                 self.buildView();
-            },
-
+                
+                // Catch touchstart/touchend events
+                // on all elements to recognise scrolling
+                self.element
+                .addEventListener('touchstart', self.touchstart);
+                
+                self.element
+                .addEventListener('touchmove', self.touchmove);
+            };
+            
             this.buildView = function( ){
-                var header  = self.ccm.helper.html(my.html.header);
+                var container     = self.ccm.helper.html(my.html.container);
                 
                 if(my.header_text !== '' && (typeof my.header_text === 'string')) {
-                    header.querySelector('.text-container').appendChild(
+                    container.querySelector('.text-container').appendChild(
                         document.createTextNode(my.header_text)
                     );
                 }
                 
-                self.element.appendChild( header );
+                self.element.appendChild( container );
+            };
+            
+            this.hideTabsRow = function( ){
+                self.element.querySelector('.tabs-row')
+                .style.transform = 'translateY(-70px)';
+            };
+            
+            this.showTabsRow = function(  ){
+                self.element.querySelector('.tabs-row')
+                .style.transform = '';
+            };
+            
+            this.touchstart = function( e ) {
+                self.touchYstart = e.touches[0].pageY;
+            };
+            
+            this.touchmove = function( e ) {
+                self.touchYdistance = e.touches[0].pageY - self.touchYstart;
+                if( self.touchYdistance > 100 ){
+                    self.showTabsRow();
+                } else if( self.touchYdistance < -100){
+                    self.hideTabsRow();
+                }
             };
        }
    };
