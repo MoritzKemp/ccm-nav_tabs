@@ -27,12 +27,13 @@
 (function(){
     
    var component = {
-        name: 'nav_tabs',    
-        ccm: 'https://akless.github.io/ccm/ccm.js',
-        config: {
-            html       : ['ccm.load','./resources/html.json'],
-            css        : ['ccm.load','./resources/style.css'],
-            header_text : ''
+        name   : 'nav_tabs',    
+        ccm    : 'https://akless.github.io/ccm/ccm.js',
+        config : {
+            html        : ['ccm.load','./resources/html.json'],
+            css         : ['ccm.load','./resources/style.css'],
+            header_text : '',
+            tabs        : []
         },
         Instance: function(){
             var self = this;
@@ -46,7 +47,6 @@
             };
 
             this.start = function( callback ) {
-                console.log(self);
                 
                 // Build view from html.json data
                 self.buildView();
@@ -63,13 +63,41 @@
             this.buildView = function( ){
                 var container     = self.ccm.helper.html(my.html.container);
                 
+                // Add text to headline
                 if(my.header_text !== '' && (typeof my.header_text === 'string')) {
                     container.querySelector('.text-container').appendChild(
                         document.createTextNode(my.header_text)
                     );
                 }
-                
                 self.element.appendChild( container );
+                
+                // Build tabs and add click action
+                var i=0;
+                var tabs_row = self.element.querySelector('.tabs-row');
+                // Allow only 4 tabs for ux reasons
+                while(i<4 && my.tabs[i]){
+                    var textEl = document.createTextNode(my.tabs[i].text);
+                    var tabEl = tabs_row.querySelector('.tab-'+(i+1));
+                    tabEl.addEventListener('click', self.onTabClick);
+                    tabEl.action = my.tabs[i].action;
+                    tabEl.appendChild(textEl);
+                    i++;
+                }
+            };
+            
+            this.onTabClick = function( e ){
+                if(typeof(e.target.action) === 'function') {
+                    e.target.action();
+                }
+                
+                var tabs = self.element.getElementsByClassName('tab');
+                for(var i=0; i<tabs.length; i++){
+                    if( e.path[0].classList === tabs[i].classList ){ 
+                        tabs[i].classList.add('selected');
+                    } else {
+                        tabs[i].classList.remove('selected');
+                    }
+                };
             };
             
             this.hideTabsRow = function( ){

@@ -24,7 +24,24 @@
             {
                 "tag"   : "div",
                 "class" : "tabs-row",
-                "inner" : []
+                "inner" : [
+                    {
+                        "tag":"div",
+                        "class":"tab-1 tab"
+                    },
+                    {
+                        "tag":"div",
+                        "class":"tab-2 tab"
+                    },
+                    {
+                        "tag":"div",
+                        "class":"tab-3 tab"
+                    },
+                    {
+                        "tag":"div",
+                        "class":"tab-4 tab"
+                    }
+                ]
             }   
         ]   
     }
