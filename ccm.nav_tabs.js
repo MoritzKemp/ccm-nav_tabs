@@ -92,7 +92,7 @@
                 
                 var tabs = self.element.getElementsByClassName('tab');
                 for(var i=0; i<tabs.length; i++){
-                    if( e.path[0].classList === tabs[i].classList ){ 
+                    if( e.target.classList === tabs[i].classList ){ 
                         tabs[i].classList.add('selected');
                     } else {
                         tabs[i].classList.remove('selected');
@@ -116,9 +116,9 @@
             
             this.touchmove = function( e ) {
                 self.touchYdistance = e.touches[0].pageY - self.touchYstart;
-                if( self.touchYdistance > 100 ){
+                if( self.touchYdistance > 70 ){
                     self.showTabsRow();
-                } else if( self.touchYdistance < -100){
+                } else if( self.touchYdistance < -70){
                     self.hideTabsRow();
                 }
             };
