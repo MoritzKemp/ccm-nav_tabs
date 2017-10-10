@@ -30,7 +30,7 @@
         name   : 'nav_tabs',    
         ccm    : 'https://akless.github.io/ccm/ccm.js',
         config : {
-            html        : ['ccm.load','./resources/html.json'],
+            html        : ['ccm.load','./resources/structure.js'],
             css         : ['ccm.load','./resources/style.css'],
             header_text : '',
             tabs        : []

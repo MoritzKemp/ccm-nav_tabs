@@ -1,4 +1,4 @@
-ccm.callback['html.json']({
+ccm.files['structure.js']={
     "container" : {
         "tag"   :"div",
         "class" :"container",
@@ -45,6 +45,5 @@ ccm.callback['html.json']({
             }   
         ]   
     }
-})
-
+}
 
