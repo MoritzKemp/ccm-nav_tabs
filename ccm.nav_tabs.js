@@ -30,10 +30,11 @@
         name   : 'nav_tabs',    
         ccm    : 'https://akless.github.io/ccm/ccm.js',
         config : {
-            html        : ['ccm.load','./resources/structure.js'],
-            css         : ['ccm.load','./resources/style.css'],
-            header_text : '',
-            tabs        : []
+            html          : ['ccm.load','./resources/structure.js'],
+            css           : ['ccm.load','./resources/style.css'],
+            header_text   : '',
+            hasBackground : true, 
+            tabs          : []
         },
         Instance: function(){
             var self = this;
@@ -61,7 +62,13 @@
             };
             
             this.buildView = function( ){
-                var container     = self.ccm.helper.html(my.html.container);
+                
+                if(my.hasBackground){
+                    var background = self.ccm.helper.html(my.html.background);
+                    self.element.appendChild( background );
+                }
+                
+                var container  = self.ccm.helper.html(my.html.container);
                 
                 // Add text to headline
                 if(my.header_text !== '' && (typeof my.header_text === 'string')) {

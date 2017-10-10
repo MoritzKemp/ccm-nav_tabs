@@ -87,3 +87,21 @@ THE SOFTWARE.
 .selected {
     border-bottom: 4px solid white;
 }
+
+/* -- Background -- */
+.background {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    background: #58a;
+    background-image: repeating-linear-gradient(
+            30deg,
+            hsla(0,0%,100%,.1),
+            hsla(0,0%,100%,.1) 15px,
+            transparent 0, transparent 30px
+        );
+    
+}

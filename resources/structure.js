@@ -42,8 +42,12 @@ ccm.files['structure.js']={
                         "class":"tab-4 tab"
                     }
                 ]
-            }   
+            }
         ]   
+    },
+    "background": {
+        "tag":"div",
+        "class":"background"
     }
-}
+};
 
