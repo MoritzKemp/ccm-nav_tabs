@@ -61,6 +61,8 @@
                     self.element.addEventListener('touchstart', self.touchstart);
                     self.element.addEventListener('touchmove', self.touchmove);
                 }
+                
+                if( callback ) callback();
             };
             
             this.buildView = function( ){
