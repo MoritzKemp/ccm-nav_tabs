@@ -96,6 +96,7 @@ THE SOFTWARE.
     top: 0;
     left: 0;
     z-index: -1;
+    background-attachment: fixed;
     background: #58a;
     background-image: repeating-linear-gradient(
             30deg,
