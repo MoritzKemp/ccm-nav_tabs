@@ -1,4 +1,4 @@
-{
+ccm.callback['html.json']({
     "container" : {
         "tag"   :"div",
         "class" :"container",
@@ -45,4 +45,6 @@
             }   
         ]   
     }
-}
+})
+
+
