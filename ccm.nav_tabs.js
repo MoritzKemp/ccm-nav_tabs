@@ -122,11 +122,11 @@
             };
             
             this.touchstart = function( e ) {
-                self.touchYstart = e.touches[0].pageY;
+                self.touchYstart = e.touches[0].clientY;
             };
             
             this.touchmove = function( e ) {
-                self.touchYdistance = e.touches[0].pageY - self.touchYstart;
+                self.touchYdistance = e.touches[0].clientY - self.touchYstart;
                 if( self.touchYdistance > 70 ){
                     self.showTabsRow();
                 } else if( self.touchYdistance < -70){
