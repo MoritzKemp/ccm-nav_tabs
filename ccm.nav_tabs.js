@@ -34,7 +34,8 @@
             css           : ['ccm.load','./resources/style.css'],
             header_text   : '',
             hasBackground : true, 
-            tabs          : []
+            tabs          : [],
+            scroll_area   : ''
         },
         Instance: function(){
             var self = this;
@@ -53,12 +54,13 @@
                 self.buildView();
                 
                 // Catch touchstart/touchend events
-                // on all elements to recognise scrolling
-                self.element
-                .addEventListener('touchstart', self.touchstart);
-                
-                self.element
-                .addEventListener('touchmove', self.touchmove);
+                if(my.scroll_area){
+                    my.scroll_area.addEventListener('touchstart', self.touchstart);
+                    my.scroll_area.addEventListener('touchmove', self.touchstart);
+                } else {
+                    self.element.addEventListener('touchstart', self.touchstart);
+                    self.element.addEventListener('touchmove', self.touchmove);
+                }
             };
             
             this.buildView = function( ){
