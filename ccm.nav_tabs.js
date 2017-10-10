@@ -56,7 +56,7 @@
                 // Catch touchstart/touchend events
                 if(my.scroll_area){
                     my.scroll_area.addEventListener('touchstart', self.touchstart);
-                    my.scroll_area.addEventListener('touchmove', self.touchstart);
+                    my.scroll_area.addEventListener('touchmove', self.touchmove);
                 } else {
                     self.element.addEventListener('touchstart', self.touchstart);
                     self.element.addEventListener('touchmove', self.touchmove);
