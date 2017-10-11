@@ -30,7 +30,54 @@
         name   : 'nav_tabs',    
         ccm    : 'https://akless.github.io/ccm/ccm.js',
         config : {
-            html          : ['ccm.load','./resources/structure.js'],
+            html          : {
+                "container" : {
+                    "tag"   :"div",
+                    "class" :"container",
+                    "inner" : [
+                        {
+                            "tag"   : "div",
+                            "class" : "header",
+                            "inner" : [
+                                {
+                                    "tag"   : "div",
+                                    "class" : "button-container"
+                                },
+                                {
+                                    "tag"   : "div",
+                                    "class" : "text-container" 
+                                },
+                                {
+                                    "tag"   : "div",
+                                    "class" : "spacer"
+                                }
+                            ]
+                        },
+                        {
+                            "tag"   : "div",
+                            "class" : "tabs-row",
+                            "inner" : [
+                                {
+                                    "tag":"div",
+                                    "class":"tab-1 tab"
+                                },
+                                {
+                                    "tag":"div",
+                                    "class":"tab-2 tab"
+                                },
+                                {
+                                    "tag":"div",
+                                    "class":"tab-3 tab"
+                                },
+                                {
+                                    "tag":"div",
+                                    "class":"tab-4 tab"
+                                }
+                            ]
+                        }
+                    ]   
+                }
+            },
             css           : ['ccm.load','./resources/style.css'],
             header_text   : '',
             hasBackground : true, 
@@ -55,22 +102,17 @@
                 
                 // Catch touchstart/touchend events
                 if(my.scroll_area){
-                    my.scroll_area.addEventListener('touchstart', self.touchstart);
-                    my.scroll_area.addEventListener('touchmove', self.touchmove);
+                    my.scroll_area.addEventListener('touchstart', touchstart);
+                    my.scroll_area.addEventListener('touchmove', touchmove);
                 } else {
-                    self.element.addEventListener('touchstart', self.touchstart);
-                    self.element.addEventListener('touchmove', self.touchmove);
+                    self.element.addEventListener('touchstart', touchstart);
+                    self.element.addEventListener('touchmove', touchmove);
                 }
                 
                 if( callback ) callback();
             };
             
             this.buildView = function( ){
-                
-                if(my.hasBackground){
-                    var background = self.ccm.helper.html(my.html.background);
-                    self.element.appendChild( background );
-                }
                 
                 var container  = self.ccm.helper.html(my.html.container);
                 
@@ -89,7 +131,7 @@
                 while(i<4 && my.tabs[i]){
                     var textEl = document.createTextNode(my.tabs[i].text);
                     var tabEl = tabs_row.querySelector('.tab-'+(i+1));
-                    tabEl.addEventListener('click', self.onTabClick);
+                    tabEl.addEventListener('click', onTabClick);
                     tabEl.appendChild(textEl);
 
                     if(my.tabs[i].action instanceof Promise){
@@ -109,7 +151,7 @@
                 }
             };
             
-            this.onTabClick = function( e ){
+            onTabClick = function( e ){
                 if(typeof(e.target.action) === 'function') {
                     e.target.action();
                 }
@@ -124,26 +166,26 @@
                 };
             };
             
-            this.hideTabsRow = function( ){
+            hideTabsRow = function( ){
                 self.element.querySelector('.tabs-row')
                 .style.transform = 'translateY(-70px)';
             };
             
-            this.showTabsRow = function(  ){
+            showTabsRow = function(  ){
                 self.element.querySelector('.tabs-row')
                 .style.transform = '';
             };
             
-            this.touchstart = function( e ) {
+            touchstart = function( e ) {
                 self.touchYstart = e.touches[0].clientY;
             };
             
-            this.touchmove = function( e ) {
+            touchmove = function( e ) {
                 self.touchYdistance = e.touches[0].clientY - self.touchYstart;
                 if( self.touchYdistance > 70 ){
-                    self.showTabsRow();
+                    showTabsRow();
                 } else if( self.touchYdistance < -70){
-                    self.hideTabsRow();
+                    hideTabsRow();
                 }
             };
        }
