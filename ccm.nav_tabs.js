@@ -90,8 +90,21 @@
                     var textEl = document.createTextNode(my.tabs[i].text);
                     var tabEl = tabs_row.querySelector('.tab-'+(i+1));
                     tabEl.addEventListener('click', self.onTabClick);
-                    tabEl.action = my.tabs[i].action;
                     tabEl.appendChild(textEl);
+
+                    if(my.tabs[i].action instanceof Promise){
+                        var el = tabEl;
+                        var actionPromise = my.tabs[i].action;
+                        actionPromise
+                        .then(function( desiredAction ){
+                            el.action = desiredAction;
+                        })
+                        .catch(function( error ){
+                            tabEl.action = console.log('Not specified due to error in Promise.');
+                            console.log('The Promise for Tab ',i,' failed with:',error);
+                        });
+                    }
+
                     i++;
                 }
             };
