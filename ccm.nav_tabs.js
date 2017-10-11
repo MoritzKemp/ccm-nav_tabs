@@ -93,7 +93,7 @@
                     tabEl.appendChild(textEl);
 
                     if(my.tabs[i].action instanceof Promise){
-                        var el = tabEl;
+                        const el = tabEl;
                         var actionPromise = my.tabs[i].action;
                         actionPromise
                         .then(function( desiredAction ){
