@@ -37,12 +37,23 @@ THE SOFTWARE.
             ccm.start('ccm.nav_tabs.js', {
                 "root":document.querySelector('.nav'),
                 "header_text": "Testing",
-                "tabs_text": ["Tab1", "Tab2", "Tab3", "Tab4"],
-                "tabs_action":[
-                    ()=>{console.log("Tab 1 page");},
-                    ()=>{console.log("Tab 2 page");},
-                    ()=>{console.log("Tab 3 page");},
-                    ()=>{console.log("Tab 4 page");}
+                "tabs": [
+                    {
+                        "text":"Tab1",
+                        "action":()=>{console.log("Tab 1");}
+                    },
+                    {
+                        "text":"Tab2",
+                        "action":()=>{console.log("Tab 2");}
+                    },
+                    {
+                        "text":"Tab3",
+                        "action":()=>{console.log("Tab 3");}
+                    },
+                    {
+                        "text":"Tab4",
+                        "action":()=>{console.log("Tab 4");}
+                    }
                 ]
             });
         </script>

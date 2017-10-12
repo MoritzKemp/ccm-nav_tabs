@@ -59,7 +59,7 @@
                             "inner" : [
                                 {
                                     "tag":"div",
-                                    "class":"tab-0 tab"
+                                    "class":"tab-0 tab selected"
                                 },
                                 {
                                     "tag":"div",
@@ -79,16 +79,32 @@
                 }
             },
             css           : ['ccm.load','./resources/style.css'],
-            header_text   : '', 
-            tabs_text     : [],
-            tabs_action   : [],
+            header_text   : 'Unspecified', 
+            tabs          : [
+                {
+                    "text"   : "TabNo. 0",
+                    "action" : ""
+                },
+                {
+                    "text"   : "TabNo. 1",
+                    "action" : ""
+                },
+                {
+                    "text"   : "TabNo. 2",
+                    "action" : ""
+                },
+                {
+                    "text"   : "TabNo. 3",
+                    "action" : ""
+                }
+            ],
             scroll_area   : ''
         },
         Instance: function(){
-            var self = this;
-            var my;
-            var touchYstart = 0;
-            var touchYdistance = 0;
+            const self = this;
+            let my;
+            let touchYstart = 0;
+            let touchYdistance = 0;
 
             this.ready = function( callback ) {
                 my = self.ccm.helper.privatize( self );                
@@ -112,14 +128,15 @@
                 if( callback ) callback();
             };
             
+            /* -- Public function: set actions of tabs */
             
-            this.setTabActions = function( tabActions ){
-                let tabEl = '';
-                for(let i=0; i<4; i++){
-                    tabEl = self.element.querySelector('.tab-'+i);
-                    tabEl.action = tabActions[i];
-                }
+            this.setTabAction = function( tabId, action ){
+                let tabEl = self.element.querySelector('.tab-'+tabId);
+                if(tabEl)
+                    tabEl.action = action;
             };
+            
+            /* -- Private functions from here -- */
             
             buildView = function( ){
                 
@@ -139,15 +156,15 @@
                 let textEl, tabEl;
                 
                 // Allow only 4 tabs for ux reasons
-                while(i<4 && my.tabs_text[i]){
-                    textEl = document.createTextNode(my.tabs_text[i]);
+                while(i<4 && my.tabs[i]){
+                    textEl = document.createTextNode(my.tabs[i].text);
                     tabEl = tabs_row.querySelector('.tab-'+i);
                     tabEl.addEventListener('click', onTabClick);
                     tabEl.appendChild(textEl);
+                    if(my.tabs[i].action)
+                        self.setTabAction( i, my.tabs[i].action);
                     i++;
                 }
-                
-                self.setTabActions(my.tabs_action);
             };
             
             onTabClick = function( event ){
