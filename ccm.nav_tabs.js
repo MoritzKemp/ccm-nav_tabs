@@ -28,7 +28,7 @@
     
    var component = {
         name   : 'nav_tabs',    
-        ccm    : 'https://akless.github.io/ccm/ccm.js',
+        ccm    : 'https://akless.github.io/ccm/version/ccm-11.2.0.min.js',
         config : {
             html          : {
                 "container" : {
@@ -59,6 +59,10 @@
                             "inner" : [
                                 {
                                     "tag":"div",
+                                    "class":"tab-0 tab"
+                                },
+                                {
+                                    "tag":"div",
                                     "class":"tab-1 tab"
                                 },
                                 {
@@ -68,10 +72,6 @@
                                 {
                                     "tag":"div",
                                     "class":"tab-3 tab"
-                                },
-                                {
-                                    "tag":"div",
-                                    "class":"tab-4 tab"
                                 }
                             ]
                         }
@@ -79,9 +79,9 @@
                 }
             },
             css           : ['ccm.load','./resources/style.css'],
-            header_text   : '',
-            hasBackground : true, 
-            tabs          : [],
+            header_text   : '', 
+            tabs_text     : [],
+            tabs_action   : [],
             scroll_area   : ''
         },
         Instance: function(){
@@ -98,7 +98,7 @@
             this.start = function( callback ) {
                 
                 // Build view from html.json data
-                self.buildView();
+                buildView();
                 
                 // Catch touchstart/touchend events
                 if(my.scroll_area){
@@ -112,9 +112,18 @@
                 if( callback ) callback();
             };
             
-            this.buildView = function( ){
+            
+            this.setTabActions = function( tabActions ){
+                let tabEl = '';
+                for(let i=0; i<4; i++){
+                    tabEl = self.element.querySelector('.tab-'+i);
+                    tabEl.action = tabActions[i];
+                }
+            };
+            
+            buildView = function( ){
                 
-                var container  = self.ccm.helper.html(my.html.container);
+                const container  = self.ccm.helper.html(my.html.container);
                 
                 // Add text to headline
                 if(my.header_text !== '' && (typeof my.header_text === 'string')) {
@@ -125,40 +134,29 @@
                 self.element.appendChild( container );
                 
                 // Build tabs and add click action
-                var i=0;
-                var tabs_row = self.element.querySelector('.tabs-row');
+                let i=0;
+                const tabs_row = self.element.querySelector('.tabs-row');
+                let textEl, tabEl;
+                
                 // Allow only 4 tabs for ux reasons
-                while(i<4 && my.tabs[i]){
-                    var textEl = document.createTextNode(my.tabs[i].text);
-                    var tabEl = tabs_row.querySelector('.tab-'+(i+1));
+                while(i<4 && my.tabs_text[i]){
+                    textEl = document.createTextNode(my.tabs_text[i]);
+                    tabEl = tabs_row.querySelector('.tab-'+i);
                     tabEl.addEventListener('click', onTabClick);
                     tabEl.appendChild(textEl);
-
-                    if(my.tabs[i].action instanceof Promise){
-                        const el = tabEl;
-                        var actionPromise = my.tabs[i].action;
-                        actionPromise
-                        .then(function( desiredAction ){
-                            el.action = desiredAction;
-                        })
-                        .catch(function( error ){
-                            tabEl.action = console.log('Not specified due to error in Promise.');
-                            console.log('The Promise for Tab ',i,' failed with:',error);
-                        });
-                    }
-
                     i++;
                 }
+                
+                self.setTabActions(my.tabs_action);
             };
             
-            onTabClick = function( e ){
-                if(typeof(e.target.action) === 'function') {
-                    e.target.action();
-                }
+            onTabClick = function( event ){
+                if(typeof(event.target.action) === 'function')
+                    event.target.action();
                 
-                var tabs = self.element.getElementsByClassName('tab');
-                for(var i=0; i<tabs.length; i++){
-                    if( e.target.classList === tabs[i].classList ){ 
+                const tabs = self.element.getElementsByClassName('tab');
+                for(let i=0; i<tabs.length; i++){
+                    if( event.target.classList === tabs[i].classList ){ 
                         tabs[i].classList.add('selected');
                     } else {
                         tabs[i].classList.remove('selected');
@@ -171,7 +169,7 @@
                 .style.transform = 'translateY(-70px)';
             };
             
-            showTabsRow = function(  ){
+            showTabsRow = function( ){
                 self.element.querySelector('.tabs-row')
                 .style.transform = '';
             };
@@ -182,9 +180,9 @@
             
             touchmove = function( e ) {
                 self.touchYdistance = e.touches[0].clientY - self.touchYstart;
-                if( self.touchYdistance > 70 ){
+                if( self.touchYdistance > 50 ){
                     showTabsRow();
-                } else if( self.touchYdistance < -70){
+                } else if( self.touchYdistance < -50){
                     hideTabsRow();
                 }
             };

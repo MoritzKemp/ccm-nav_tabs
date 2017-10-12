@@ -73,6 +73,7 @@ THE SOFTWARE.
     left: 0;
     background-color: #f98722;
     transition: transform 200ms;
+    will-change: transform;
 }
 
 .tab {

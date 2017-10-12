@@ -28,10 +28,23 @@ THE SOFTWARE.
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+        <script src="https://akless.github.io/ccm/version/ccm-11.2.0.min.js"></script>
         <script src="ccm.nav_tabs.js" type="text/javascript"></script>
     </head>
     <body>
-    <ccm-nav_tabs header_text='Testing'>
-    </ccm-nav_tabs>
+        <div class="nav"></div>
+        <script>
+            ccm.start('ccm.nav_tabs.js', {
+                "root":document.querySelector('.nav'),
+                "header_text": "Testing",
+                "tabs_text": ["Tab1", "Tab2", "Tab3", "Tab4"],
+                "tabs_action":[
+                    ()=>{console.log("Tab 1 page");},
+                    ()=>{console.log("Tab 2 page");},
+                    ()=>{console.log("Tab 3 page");},
+                    ()=>{console.log("Tab 4 page");}
+                ]
+            });
+        </script>
     </body>
 </html>
