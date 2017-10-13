@@ -58,20 +58,20 @@
                             "class" : "tabs-row",
                             "inner" : [
                                 {
-                                    "tag":"div",
-                                    "class":"tab-0 tab selected"
+                                    "tag"   : "div",
+                                    "class" : "tab-0 tab selected"
                                 },
                                 {
-                                    "tag":"div",
-                                    "class":"tab-1 tab"
+                                    "tag"   : "div",
+                                    "class" : "tab-1 tab"
                                 },
                                 {
-                                    "tag":"div",
-                                    "class":"tab-2 tab"
+                                    "tag"   : "div",
+                                    "class" : "tab-2 tab"
                                 },
                                 {
-                                    "tag":"div",
-                                    "class":"tab-3 tab"
+                                    "tag"   : "div",
+                                    "class" : "tab-3 tab"
                                 }
                             ]
                         }
@@ -102,7 +102,7 @@
         },
         Instance: function(){
             const self = this;
-            let my;
+            let my = {};
             let touchYstart = 0;
             let touchYdistance = 0;
 
@@ -134,6 +134,16 @@
                 let tabEl = self.element.querySelector('.tab-'+tabId);
                 if(tabEl)
                     tabEl.action = action;
+            };
+          
+            this.setRightHeaderArea = function( htmlObject ){
+                self.element.querySelector('.spacer')
+                .appendChild( htmlObject );
+            };
+            
+            this.setLeftHeaderArea = function( htmlObject ){
+                self.element.querySelector('.button-container')
+                .appendChild( htmlObject );
             };
             
             /* -- Private functions from here -- */
