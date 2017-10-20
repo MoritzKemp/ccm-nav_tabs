@@ -25,8 +25,7 @@
 /* global ccm */
 
 (function(){
-    
-   var component = {
+    var component = {
         name   : 'nav_tabs',    
         ccm    : 'https://akless.github.io/ccm/version/ccm-11.2.0.min.js',
         config : {
@@ -78,8 +77,8 @@
                     ]   
                 }
             },
-            css           : ['ccm.load','./resources/style.css'],
-            header_text   : 'Unspecified', 
+            css           : ['ccm.load','./style.css'],
+            header_text   : 'Dummy Head', 
             tabs          : [
                 {
                     "text"   : "TabNo. 0",
@@ -112,11 +111,10 @@
             };
 
             this.start = function( callback ) {
-                
                 // Build view from html.json data
                 buildView();
-                
-                // Catch touchstart/touchend events
+                // Catch touchstart/touchend events either on scroll area
+                // or on own tabs element
                 if(my.scroll_area){
                     my.scroll_area.addEventListener('touchstart', touchstart);
                     my.scroll_area.addEventListener('touchmove', touchmove);
@@ -124,34 +122,36 @@
                     self.element.addEventListener('touchstart', touchstart);
                     self.element.addEventListener('touchmove', touchmove);
                 }
-                
                 if( callback ) callback();
             };
             
-            /* -- Public function: set actions of tabs */
+            /* --- Public functions --- */
             
+            // Set tab actions. 
+            // Range of tab-id: [0-3]
+            // Actions is a function (otherwise ignored later)
             this.setTabAction = function( tabId, action ){
                 let tabEl = self.element.querySelector('.tab-'+tabId);
                 if(tabEl)
                     tabEl.action = action;
             };
           
+            // Fill the area right of the headline with any html objec (e.g. log-in button)
             this.setRightHeaderArea = function( htmlObject ){
                 self.element.querySelector('.spacer')
                 .appendChild( htmlObject );
             };
             
+            // Fill the area left of the headline with any html object (e.g. back-button)
             this.setLeftHeaderArea = function( htmlObject ){
                 self.element.querySelector('.button-container')
                 .appendChild( htmlObject );
             };
             
-            /* -- Private functions from here -- */
+            /* --- Private functions from here --- */
             
             buildView = function( ){
-                
                 const container  = self.ccm.helper.html(my.html.container);
-                
                 // Add text to headline
                 if(my.header_text !== '' && (typeof my.header_text === 'string')) {
                     container.querySelector('.text-container').appendChild(
@@ -159,12 +159,11 @@
                     );
                 }
                 self.element.appendChild( container );
-                
-                // Build tabs and add click action
+                // Get tab-elements
                 let i=0;
                 const tabs_row = self.element.querySelector('.tabs-row');
                 let textEl, tabEl;
-                
+                // Add text and onclick-actions to tabs
                 // Allow only 4 tabs for ux reasons
                 while(i<4 && my.tabs[i]){
                     textEl = document.createTextNode(my.tabs[i].text);
@@ -180,7 +179,6 @@
             onTabClick = function( event ){
                 if(typeof(event.target.action) === 'function')
                     event.target.action();
-                
                 const tabs = self.element.getElementsByClassName('tab');
                 for(let i=0; i<tabs.length; i++){
                     if( event.target.classList === tabs[i].classList ){ 
