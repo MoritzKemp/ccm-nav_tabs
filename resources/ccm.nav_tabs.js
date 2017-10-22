@@ -137,20 +137,20 @@
             };
           
             // Fill the area right of the headline with any html objec (e.g. log-in button)
-            this.setRightHeaderArea = function( htmlObject ){
+            this.setRightHeaderArea = function( domObject ){
                 self.element.querySelector('.spacer')
-                .appendChild( htmlObject );
+                .appendChild( domObject );
             };
             
             // Fill the area left of the headline with any html object (e.g. back-button)
-            this.setLeftHeaderArea = function( htmlObject ){
+            this.setLeftHeaderArea = function( domObject ){
                 self.element.querySelector('.button-container')
-                .appendChild( htmlObject );
+                .appendChild( domObject );
             };
             
             /* --- Private functions from here --- */
             
-            buildView = function( ){
+            const buildView = function( ){
                 const container  = self.ccm.helper.html(my.html.container);
                 // Add text to headline
                 if(my.header_text !== '' && (typeof my.header_text === 'string')) {
@@ -176,7 +176,7 @@
                 }
             };
             
-            onTabClick = function( event ){
+            const onTabClick = function( event ){
                 if(typeof(event.target.action) === 'function')
                     event.target.action();
                 const tabs = self.element.getElementsByClassName('tab');
@@ -189,21 +189,21 @@
                 };
             };
             
-            hideTabsRow = function( ){
+            const hideTabsRow = function( ){
                 self.element.querySelector('.tabs-row')
                 .style.transform = 'translateY(-70px)';
             };
             
-            showTabsRow = function( ){
+            const showTabsRow = function( ){
                 self.element.querySelector('.tabs-row')
                 .style.transform = '';
             };
             
-            touchstart = function( e ) {
+            const touchstart = function( e ) {
                 self.touchYstart = e.touches[0].clientY;
             };
             
-            touchmove = function( e ) {
+            const touchmove = function( e ) {
                 self.touchYdistance = e.touches[0].clientY - self.touchYstart;
                 if( self.touchYdistance > 50 ){
                     showTabsRow();
