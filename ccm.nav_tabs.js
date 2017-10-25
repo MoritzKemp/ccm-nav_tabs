@@ -118,10 +118,9 @@
                 if(my.scroll_area){
                     my.scroll_area.addEventListener('touchstart', touchstart);
                     my.scroll_area.addEventListener('touchmove', touchmove);
-                } else {
+                }
                     self.element.addEventListener('touchstart', touchstart);
                     self.element.addEventListener('touchmove', touchmove);
-                }
                 if( callback ) callback();
             };
             
