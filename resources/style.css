@@ -1,5 +1,0 @@
-.container{position:fixed;width:100%;top:0;left:0}.header{position:fixed;display:flex;flex-direction:row;align-items:center;justify-content:space-between;z-index:2;width:100%;height:60px;top:0;left:0;background-color:#f98722}
-.button-container{flex:1 0 0}.text-container{flex:2 0 0;text-align:center;color:white;font-size:1.5em;font-family:sans-serif}
-.spacer{flex:1 0 0}.tabs-row{position:relative;display:flex;flex-direction:row;align-items:stretch;justify-content:space-between;width:100%;height:62px;top:58px;left:0;background-color:hsl(28,95%,55%);transition:transform 200ms;will-change:transform}
-.tab{flex:1 0 0;text-align:center;padding-top:20px;color:white;font-size:1.2em;font-family:sans-serif;cursor:pointer;-webkit-tap-highlight-color:hsla(0,0%,100%,0)}
-.tab:active{font-weight:bold}.selected{font-weight:bold;border-bottom:4px solid white}

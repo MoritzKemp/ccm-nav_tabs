@@ -29,7 +29,7 @@
         name   : 'nav_tabs',    
         ccm    : 'https://akless.github.io/ccm/version/ccm-11.2.0.min.js',
         config : {
-            html          : {
+            "html"          : {
                 "container" : {
                     "tag"   :"div",
                     "class" :"container",
@@ -77,9 +77,9 @@
                     ]   
                 }
             },
-            css           : ['ccm.load','./style.css'],
-            header_text   : 'Dummy Head', 
-            tabs          : [
+            "css"           : ['ccm.load','https://MoritzKemp.github.io/ccm-nav_tabs/style.css'],
+            "header_text"   : 'Dummy Head', 
+            "tabs"          : [
                 {
                     "text"   : "TabNo. 0",
                     "action" : ""
@@ -97,7 +97,8 @@
                     "action" : ""
                 }
             ],
-            scroll_area   : ''
+            "scroll_area"   : '',
+            "router": ["ccm.start", "https://moritzkemp.github.io/ccm-route_node/ccm.route_node.js"]
         },
         Instance: function(){
             const self = this;
@@ -118,10 +119,19 @@
                 if(my.scroll_area){
                     my.scroll_area.addEventListener('touchstart', touchstart);
                     my.scroll_area.addEventListener('touchmove', touchmove);
-                } else {
-                    self.element.addEventListener('touchstart', touchstart);
-                    self.element.addEventListener('touchmove', touchmove);
                 }
+                self.element.addEventListener('touchstart', touchstart);
+                self.element.addEventListener('touchmove', touchmove);
+                
+                //Configure router
+                // PROBLEM HERE ******************************************************
+                console.log(my.router);
+                //********************************************************************
+                my.tabs.forEach( (tab)=>{
+                    if(tab.route)
+                        my.router.getPatterns().push(tab.route);
+                });
+                my.router.addObserver(navigateTo);
                 if( callback ) callback();
             };
             
@@ -137,20 +147,20 @@
             };
           
             // Fill the area right of the headline with any html objec (e.g. log-in button)
-            this.setRightHeaderArea = function( htmlObject ){
+            this.setRightHeaderArea = function( domObject ){
                 self.element.querySelector('.spacer')
-                .appendChild( htmlObject );
+                .appendChild( domObject );
             };
             
             // Fill the area left of the headline with any html object (e.g. back-button)
-            this.setLeftHeaderArea = function( htmlObject ){
+            this.setLeftHeaderArea = function( domObject ){
                 self.element.querySelector('.button-container')
-                .appendChild( htmlObject );
+                .appendChild( domObject );
             };
             
             /* --- Private functions from here --- */
             
-            buildView = function( ){
+            const buildView = function( ){
                 const container  = self.ccm.helper.html(my.html.container);
                 // Add text to headline
                 if(my.header_text !== '' && (typeof my.header_text === 'string')) {
@@ -159,7 +169,7 @@
                     );
                 }
                 self.element.appendChild( container );
-                // Get tab-elements
+                // Get tabs row
                 let i=0;
                 const tabs_row = self.element.querySelector('.tabs-row');
                 let textEl, tabEl;
@@ -172,38 +182,58 @@
                     tabEl.appendChild(textEl);
                     if(my.tabs[i].action)
                         self.setTabAction( i, my.tabs[i].action);
+                    if(my.tabs[i].route)
+                        tabEl.route = my.tabs[i].route;
                     i++;
                 }
             };
             
-            onTabClick = function( event ){
+            const navigateTo = function( route ){
+                const tabs = self.element.getElementsByClassName('tab');
+                let i=0;
+                let match = false;
+                while(i<tabs.length && !match){
+                    if( route === tabs[i].route ){
+                        match = true;
+                        tabs[i].classList.add('selected');
+                        if(typeof(tabs[i].action) === 'function')
+                            tabs[i].action();
+                    } else {
+                        tabs[i].classList.remove('selected');
+                    }
+                    i++;
+                };
+            };
+            
+            const onTabClick = function( event ){
                 if(typeof(event.target.action) === 'function')
                     event.target.action();
                 const tabs = self.element.getElementsByClassName('tab');
                 for(let i=0; i<tabs.length; i++){
                     if( event.target.classList === tabs[i].classList ){ 
                         tabs[i].classList.add('selected');
+                        my.router.navigatedTo(tabs[i].route);
                     } else {
                         tabs[i].classList.remove('selected');
                     }
                 };
             };
             
-            hideTabsRow = function( ){
+            const hideTabsRow = function( ){
                 self.element.querySelector('.tabs-row')
                 .style.transform = 'translateY(-70px)';
             };
             
-            showTabsRow = function( ){
+            const showTabsRow = function( ){
                 self.element.querySelector('.tabs-row')
                 .style.transform = '';
             };
             
-            touchstart = function( e ) {
+            const touchstart = function( e ) {
                 self.touchYstart = e.touches[0].clientY;
             };
             
-            touchmove = function( e ) {
+            const touchmove = function( e ) {
                 self.touchYdistance = e.touches[0].clientY - self.touchYstart;
                 if( self.touchYdistance > 50 ){
                     showTabsRow();
