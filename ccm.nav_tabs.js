@@ -27,7 +27,7 @@
 (function(){
     var component = {
         name   : 'nav_tabs',    
-        ccm    : 'https://akless.github.io/ccm/version/ccm-11.2.0.min.js',
+        ccm    : 'https://akless.github.io/ccm/ccm.js',
         config : {
             "html"          : {
                 "container" : {
@@ -82,19 +82,23 @@
             "tabs"          : [
                 {
                     "text"   : "TabNo. 0",
-                    "action" : ""
+                    "action" : "",
+                    "route"  : "/tab1"
                 },
                 {
                     "text"   : "TabNo. 1",
-                    "action" : ""
+                    "action" : "",
+                    "route"  : "/tab2"
                 },
                 {
                     "text"   : "TabNo. 2",
-                    "action" : ""
+                    "action" : "",
+                    "route"  : "/tab3"
                 },
                 {
                     "text"   : "TabNo. 3",
-                    "action" : ""
+                    "action" : "",
+                    "route"  : "/tab4"
                 }
             ],
             "scroll_area"   : '',
@@ -107,7 +111,7 @@
             let touchYdistance = 0;
 
             this.ready = function( callback ) {
-                my = self.ccm.helper.privatize( self );                
+                my = self.ccm.helper.privatize( self );
                 if( callback ) callback();
             };
 
@@ -122,16 +126,16 @@
                 }
                 self.element.addEventListener('touchstart', touchstart);
                 self.element.addEventListener('touchmove', touchmove);
-                
-                //Configure router
-                // PROBLEM HERE ******************************************************
-                console.log(my.router);
-                //********************************************************************
+                 // Configure router
+                let patterns = [];
                 my.tabs.forEach( (tab)=>{
                     if(tab.route)
-                        my.router.getPatterns().push(tab.route);
+                        patterns.push(tab.route);
                 });
-                my.router.addObserver(navigateTo);
+                self.router.setPatterns( patterns );
+                self.router.addObserver(navigateTo);
+                self.router.checkURL();
+                
                 if( callback ) callback();
             };
             
@@ -184,39 +188,46 @@
                         self.setTabAction( i, my.tabs[i].action);
                     if(my.tabs[i].route)
                         tabEl.route = my.tabs[i].route;
+                    my.tabs[i].id = 'tab-'+i;
                     i++;
                 }
             };
             
+            // Observer function for router.
             const navigateTo = function( route ){
                 const tabs = self.element.getElementsByClassName('tab');
                 let i=0;
                 let match = false;
-                while(i<tabs.length && !match){
-                    if( route === tabs[i].route ){
+                let tabElm = {};
+                for(let k=0; k<tabs.length; k++){
+                    tabs[k].classList.remove('selected');
+                }
+                while(i<my.tabs.length && !match){
+                    if(route === my.tabs[i].route){
+                        tabElm = self.element.querySelector('.'+my.tabs[i].id);
+                        tabElm.classList.add('selected');
+                        if(typeof(tabElm.action) === 'function')
+                            tabElm.action();
                         match = true;
-                        tabs[i].classList.add('selected');
-                        if(typeof(tabs[i].action) === 'function')
-                            tabs[i].action();
-                    } else {
-                        tabs[i].classList.remove('selected');
                     }
                     i++;
-                };
+                }
             };
             
+            // React on user input
             const onTabClick = function( event ){
-                if(typeof(event.target.action) === 'function')
-                    event.target.action();
-                const tabs = self.element.getElementsByClassName('tab');
-                for(let i=0; i<tabs.length; i++){
-                    if( event.target.classList === tabs[i].classList ){ 
-                        tabs[i].classList.add('selected');
-                        my.router.navigatedTo(tabs[i].route);
-                    } else {
-                        tabs[i].classList.remove('selected');
+                const allTabElem = self.element.getElementsByClassName('tab');
+                for(let i=0; i<allTabElem.length; i++){
+                    allTabElem[i].classList.remove('selected');
+                }
+                
+                const tabElem = event.target;
+                for(let j=0; j<my.tabs.length; j++){
+                    if( tabElem.classList.contains(my.tabs[j].id) ){
+                        tabElem.classList.add('selected');
+                        self.router.navigatedTo(my.tabs[j].route);
                     }
-                };
+                }
             };
             
             const hideTabsRow = function( ){
