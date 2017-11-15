@@ -220,12 +220,13 @@
                 for(let i=0; i<allTabElem.length; i++){
                     allTabElem[i].classList.remove('selected');
                 }
-                
                 const tabElem = event.target;
                 for(let j=0; j<my.tabs.length; j++){
                     if( tabElem.classList.contains(my.tabs[j].id) ){
                         tabElem.classList.add('selected');
                         self.router.navigatedTo(my.tabs[j].route);
+                        if(typeof(tabElem.action) === 'function')
+                            tabElem.action();
                     }
                 }
             };
