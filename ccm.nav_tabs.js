@@ -27,9 +27,9 @@
 (function(){
     var component = {
         name   : 'nav_tabs',    
-        ccm    : 'https://akless.github.io/ccm/version/ccm-11.2.0.min.js',
+        ccm    : 'https://akless.github.io/ccm/ccm.js',
         config : {
-            html          : {
+            "html"          : {
                 "container" : {
                     "tag"   :"div",
                     "class" :"container",
@@ -77,27 +77,32 @@
                     ]   
                 }
             },
-            css           : ['ccm.load','./style.css'],
-            header_text   : 'Dummy Head', 
-            tabs          : [
+            "css"           : ['ccm.load','./style.css'],
+            "header_text"   : 'Dummy Head', 
+            "tabs"          : [
                 {
                     "text"   : "TabNo. 0",
-                    "action" : ""
+                    "action" : "",
+                    "route"  : "/tab1"
                 },
                 {
                     "text"   : "TabNo. 1",
-                    "action" : ""
+                    "action" : "",
+                    "route"  : "/tab2"
                 },
                 {
                     "text"   : "TabNo. 2",
-                    "action" : ""
+                    "action" : "",
+                    "route"  : "/tab3"
                 },
                 {
                     "text"   : "TabNo. 3",
-                    "action" : ""
+                    "action" : "",
+                    "route"  : "/tab4"
                 }
             ],
-            scroll_area   : ''
+            "scroll_area"   : '',
+            "router": ["ccm.start", "https://moritzkemp.github.io/ccm-route_node/ccm.route_node.js"]
         },
         Instance: function(){
             const self = this;
@@ -106,7 +111,7 @@
             let touchYdistance = 0;
 
             this.ready = function( callback ) {
-                my = self.ccm.helper.privatize( self );                
+                my = self.ccm.helper.privatize( self );
                 if( callback ) callback();
             };
 
@@ -119,8 +124,18 @@
                     my.scroll_area.addEventListener('touchstart', touchstart);
                     my.scroll_area.addEventListener('touchmove', touchmove);
                 }
-                    self.element.addEventListener('touchstart', touchstart);
-                    self.element.addEventListener('touchmove', touchmove);
+                self.element.addEventListener('touchstart', touchstart);
+                self.element.addEventListener('touchmove', touchmove);
+                 // Configure router
+                let patterns = [];
+                my.tabs.forEach( (tab)=>{
+                    if(tab.route)
+                        patterns.push(tab.route);
+                });
+                self.router.setPatterns( patterns );
+                self.router.addObserver(navigateTo);
+                self.router.checkURL();
+                
                 if( callback ) callback();
             };
             
@@ -158,7 +173,7 @@
                     );
                 }
                 self.element.appendChild( container );
-                // Get tab-elements
+                // Get tabs row
                 let i=0;
                 const tabs_row = self.element.querySelector('.tabs-row');
                 let textEl, tabEl;
@@ -171,21 +186,48 @@
                     tabEl.appendChild(textEl);
                     if(my.tabs[i].action)
                         self.setTabAction( i, my.tabs[i].action);
+                    if(my.tabs[i].route)
+                        tabEl.route = my.tabs[i].route;
+                    my.tabs[i].id = 'tab-'+i;
                     i++;
                 }
             };
             
-            const onTabClick = function( event ){
-                if(typeof(event.target.action) === 'function')
-                    event.target.action();
+            // Observer function for router.
+            const navigateTo = function( route ){
                 const tabs = self.element.getElementsByClassName('tab');
-                for(let i=0; i<tabs.length; i++){
-                    if( event.target.classList === tabs[i].classList ){ 
-                        tabs[i].classList.add('selected');
-                    } else {
-                        tabs[i].classList.remove('selected');
+                let i=0;
+                let match = false;
+                let tabElm = {};
+                for(let k=0; k<tabs.length; k++){
+                    tabs[k].classList.remove('selected');
+                }
+                while(i<my.tabs.length && !match){
+                    if(route === my.tabs[i].route){
+                        tabElm = self.element.querySelector('.'+my.tabs[i].id);
+                        tabElm.classList.add('selected');
+                        if(typeof(tabElm.action) === 'function')
+                            tabElm.action();
+                        match = true;
                     }
-                };
+                    i++;
+                }
+            };
+            
+            // React on user input
+            const onTabClick = function( event ){
+                const allTabElem = self.element.getElementsByClassName('tab');
+                for(let i=0; i<allTabElem.length; i++){
+                    allTabElem[i].classList.remove('selected');
+                }
+                
+                const tabElem = event.target;
+                for(let j=0; j<my.tabs.length; j++){
+                    if( tabElem.classList.contains(my.tabs[j].id) ){
+                        tabElem.classList.add('selected');
+                        self.router.navigatedTo(my.tabs[j].route);
+                    }
+                }
             };
             
             const hideTabsRow = function( ){

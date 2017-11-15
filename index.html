@@ -28,7 +28,7 @@ THE SOFTWARE.
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
-        <script src="https://akless.github.io/ccm/version/ccm-11.2.0.min.js"></script>
+        <script src="https://akless.github.io/ccm/ccm.js"></script>
         <script src="ccm.nav_tabs.js" type="text/javascript"></script>
     </head>
     <body>
@@ -37,22 +37,34 @@ THE SOFTWARE.
             ccm.start('ccm.nav_tabs.js', {
                 "root":document.querySelector('.nav'),
                 "header_text": "Testing",
+                "routePrefix" : "/",
                 "tabs": [
                     {
                         "text":"Tab1",
-                        "action":()=>{console.log("Tab 1");}
+                        "action":()=>{console.log("Tab 1");},
+                        "route": "/tab-1"
                     },
                     {
                         "text":"Tab2",
-                        "action":()=>{console.log("Tab 2");}
+                        "action":()=>{console.log("Tab 2");},
+                        "route": "/tab-2"
                     },
                     {
                         "text":"Tab3",
-                        "action":()=>{console.log("Tab 3");}
+                        "action":()=>{console.log("Tab 3");},
+                        "route": "/tab-3"
                     },
                     {
                         "text":"Tab4",
-                        "action":()=>{console.log("Tab 4");}
+                        "action":()=>{console.log("Tab 4");},
+                        "route": "/tab-4"
+                    }
+                ],
+                "router": [
+                    "ccm.start", 
+                    "https://moritzkemp.github.io/ccm-route_node/ccm.route_node.js",
+                    {
+                        "isRoot": true
                     }
                 ]
             });
