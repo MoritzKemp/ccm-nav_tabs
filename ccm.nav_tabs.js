@@ -79,6 +79,8 @@
             },
             "css"           : ['ccm.load','./style.css'],
             "header_text"   : 'Dummy Head', 
+            "header_right_area" : "", 
+            "header_left_area" : "",
             "tabs"          : [
                 {
                     "text"   : "TabNo. 0",
@@ -173,6 +175,10 @@
                     );
                 }
                 self.element.appendChild( container );
+                if(my.header_right_area)
+                    self.setRightHeaderArea(my.header_right_area);
+                if(my.header_left_area)
+                    self.setLeftHeaderArea(my.header_left_area);
                 // Get tabs row
                 let i=0;
                 const tabs_row = self.element.querySelector('.tabs-row');
