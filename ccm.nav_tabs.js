@@ -27,7 +27,7 @@
 (function(){
     var component = {
         name   : 'nav_tabs',    
-        ccm    : 'https://akless.github.io/ccm/ccm.js',
+        ccm    : 'https://akless.github.io/ccm/version/ccm-14.3.0.min.js',
         config : {
             "html"          : {
                 "container" : {
@@ -112,9 +112,13 @@
             let touchYstart = 0;
             let touchYdistance = 0;
 
+            this.init = function( callback ){
+                callback();
+            };
+
             this.ready = function( callback ) {
                 my = self.ccm.helper.privatize( self );
-                if( callback ) callback();
+                callback();
             };
 
             this.start = function( callback ) {
